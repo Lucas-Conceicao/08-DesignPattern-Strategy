@@ -205,7 +205,7 @@ public interface EstrategiaDesconto {
 /**
  * Desconto para clientes regulares: 5%
  */
-public class DescontoClienteRegular implements EstrategiaDesconto {
+public class strategy.DescontoClienteRegular implements EstrategiaDesconto {
     
     @Override
     public double calcularDesconto(double valorOriginal) {
@@ -221,7 +221,7 @@ public class DescontoClienteRegular implements EstrategiaDesconto {
 /**
  * Desconto para clientes VIP: 15%
  */
-public class DescontoClienteVIP implements EstrategiaDesconto {
+public class strategy.DescontoClienteVIP implements EstrategiaDesconto {
     
     @Override
     public double calcularDesconto(double valorOriginal) {
@@ -237,7 +237,7 @@ public class DescontoClienteVIP implements EstrategiaDesconto {
 /**
  * Desconto para promoção especial: 25%
  */
-public class DescontoPromocional implements EstrategiaDesconto {
+public class strategy.DescontoPromocional implements EstrategiaDesconto {
     
     @Override
     public double calcularDesconto(double valorOriginal) {
@@ -253,7 +253,7 @@ public class DescontoPromocional implements EstrategiaDesconto {
 /**
  * Sem desconto: 0%
  */
-public class SemDesconto implements EstrategiaDesconto {
+public class strategy.SemDesconto implements EstrategiaDesconto {
     
     @Override
     public double calcularDesconto(double valorOriginal) {
@@ -270,36 +270,40 @@ public class SemDesconto implements EstrategiaDesconto {
 #### Classe Context
 
 ```java
+import strategy.SemDesconto;
+
 /**
  * Classe que usa a estratégia de desconto
  */
-public class Carrinho {
+public class model.
+
+Carrinho {
     private EstrategiaDesconto estrategiaDesconto;
     private double valorTotal;
     
-    public Carrinho(double valorTotal) {
+    public model.Carrinho( double valorTotal){
         this.valorTotal = valorTotal;
         this.estrategiaDesconto = new SemDesconto(); // Estratégia padrão
     }
-    
+
     /**
      * Permite trocar a estratégia em tempo de execução
      */
-    public void setEstrategiaDesconto(EstrategiaDesconto estrategia) {
+    public void setEstrategiaDesconto (EstrategiaDesconto estrategia){
         this.estrategiaDesconto = estrategia;
     }
-    
+
     /**
      * Calcula o valor final aplicando a estratégia atual
      */
-    public double calcularValorFinal() {
+    public double calcularValorFinal () {
         return estrategiaDesconto.calcularDesconto(valorTotal);
     }
-    
+
     /**
      * Exibe detalhes do carrinho
      */
-    public void exibirResumo() {
+    public void exibirResumo () {
         System.out.println("=== RESUMO DO CARRINHO ===");
         System.out.printf("Valor Original: R$ %.2f%n", valorTotal);
         System.out.println("Estratégia: " + estrategiaDesconto.getDescricao());
@@ -313,6 +317,12 @@ public class Carrinho {
 #### Cliente (Demonstração)
 
 ```java
+import model.Carrinho;
+import strategy.DescontoClienteRegular;
+import strategy.DescontoClienteVIP;
+import strategy.DescontoPromocional;
+import strategy.SemDesconto;
+
 /**
  * Classe principal que demonstra o uso do padrão Strategy
  */
@@ -320,24 +330,24 @@ public class TesteDesconto {
     public static void main(String[] args) {
         // Criar carrinho com valor de R$ 1000
         Carrinho carrinho = new Carrinho(1000.00);
-        
+
         System.out.println("🛒 SISTEMA DE DESCONTOS - PADRÃO STRATEGY\n");
-        
+
         // Cenário 1: Cliente regular
         System.out.println("📋 Cenário 1: Cliente Regular");
         carrinho.setEstrategiaDesconto(new DescontoClienteRegular());
         carrinho.exibirResumo();
-        
+
         // Cenário 2: Cliente VIP
         System.out.println("👑 Cenário 2: Cliente VIP");
         carrinho.setEstrategiaDesconto(new DescontoClienteVIP());
         carrinho.exibirResumo();
-        
+
         // Cenário 3: Promoção especial
         System.out.println("🎉 Cenário 3: Promoção Especial");
         carrinho.setEstrategiaDesconto(new DescontoPromocional());
         carrinho.exibirResumo();
-        
+
         // Cenário 4: Sem desconto
         System.out.println("💰 Cenário 4: Sem Desconto");
         carrinho.setEstrategiaDesconto(new SemDesconto());
